@@ -7,26 +7,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style>
-*{
-	font-family: sans-serif;
-	padding: 0;
-	margin: 0;
-	position: relative;
-}
-body{
-	width : 100%;
-	position: absolute;
-	align-content: center;
-}
-</style>
+<jsp:include page="/head.jsp"></jsp:include>
 </head>
-<body>
+<body> 
+<form class="box">
 <h1>JSP Test</h1>
-<form>
-<input type="radio" name="serch-type" id="type1" value="di_num" checked onchange="checkSearchType(this)">
+<input type="radio" name="search_type" id="type1" value="di_num" checked onchange="checkSearchType(this)">
 <label for="type1">선택</label>
-<input type="radio" name="serch-type" id="type2" value="di_name" onchange="checkSearchType(this)">
+<input type="radio" name="search_type" id="type2" value="di_name" onchange="checkSearchType(this)">
 <label for="type2">검색</label><br>
 부서명 : 
 <select name="di_num" id="di_num">
@@ -61,8 +49,7 @@ body{
 %>
 </select>
 <input type="text" name="di_name" id="di_name" style="display: none;"><br>
-사원명 : <input type="text" name=em_name><button>검색</button>
-</form>
+사원명 : <input type="text" name=em_name id="em_name"><input type="submit" value="검색">
 <table border="1">
 	<tr>
 		<th>사원번호</th>
@@ -110,7 +97,7 @@ try{
 %>
 	<tr>
 		<td><%=rs.getString("em_num")%></td>
-		<td><a href="/em-view.jsp?em_num=<%=rs.getString("em_num")%>"><%=rs.getString("em_name")%></a></td>
+		<td><a href="javascript:void(0)" onclick="goView(<%=rs.getString("em_num")%>)"><%=rs.getString("em_name")%></a></td>
 		<td><%=rs.getString("di_name")%></td>
 		<td><%=rs.getString("em_id")%></td> 
 		<td><%=rs.getString("credat")%></td>	
@@ -141,15 +128,47 @@ try{
 %>
 </table>
 <a href="/em-insert.jsp"><input type="button" value="사원등록"></a>
+
+</form>
 <script>
+window.onload= function (){
+	var search_type = '<%=request.getParameter("search_type")%>';
+	var di_num = '<%=request.getParameter("di_num")%>';
+	var di_name = '<%=request.getParameter("di_name")%>';
+	var em_name = '<%=request.getParameter("em_name")%>';
+	if(em_name && em_name!='null'){
+		document.querySelector('#em_name').value = em_name;
+	}
+	if(di_num && di_num!='null'){
+		document.querySelector('#di_num').value = di_num;
+	}
+	if(di_name && di_name!='null'){
+		document.querySelector('#di_name').value = di_name;
+	}
+	if(search_type && search_type!='null'){
+		document.querySelector('[name=search_type][value='+search_type+']').checked = true;
+		checkSearchType(document.querySelector('[name=search_type]:checked'));	
+	}
+}
 function checkSearchType(obj){
 	if(obj.value=='di_name'){
+		document.querySelector('#di_num').value = '';
 		document.querySelector('#di_num').style.display = 'none';
 		document.querySelector('#di_name').style.display = '';
 	}else{
+		document.querySelector('#di_name').value = '';
 		document.querySelector('#di_num').style.display = '';
 		document.querySelector('#di_name').style.display = 'none';
 	}
+}
+
+function goView(emNum){
+	var em_num = emNum;
+	var search_type = document.querySelector('[name=search_type]:checked').value;
+	var di_num = document.querySelector('#di_num').value;
+	var di_name = document.querySelector('#di_name').value;
+	var em_name = document.querySelector('#em_name').value;
+	location.href = '/em-view.jsp?em_num='+em_num+'&search_type='+search_type+'&di_num='+di_num+'&di_name='+di_name+'&em_name='+em_name;
 }
 </script>
 </body>

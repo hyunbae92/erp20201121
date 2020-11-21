@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="/head.jsp"></jsp:include>
 </head>
 <body>
 <%
@@ -87,7 +88,7 @@ if("GET".equals(request.getMethod())){
 	}
 }
 %>
-<form method="POST">
+<form method="POST" class="box">
 <table border="1">
 	<tr>
 		<td>사원번호</td>

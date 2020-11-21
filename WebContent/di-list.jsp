@@ -33,6 +33,7 @@ body{
 		<th>부서코드</th>
 		<th>부서명</th>
 		<th>기타</th>
+		<th>부서인원</th>
 	</tr>
 <%
 Connection con = null;
@@ -40,7 +41,7 @@ PreparedStatement ps = null;
 ResultSet rs = null;
 try{
 	con = DBCon.getConnectin();
-	String sql = "select * from depart_info where 1=1 ";
+	String sql = "select di.*,(select count(*) from employee emp where emp.DI_NUM=di.di_num) as cnt from depart_info di where 1=1 ";
 	if(request.getParameter("di_name")!=null && !"".equals(request.getParameter("di_name"))){
 		sql += " and di_name like '%' || ? || '%'";
 	}
@@ -67,6 +68,7 @@ try{
 		<td><%=rs.getString("di_code")%></td>
 		<td><a href="/di-view.jsp?di_num=<%=rs.getString("di_num")%>"><%=rs.getString("di_name")%></a></td>
 		<td><%=rs.getString("di_etc")%></td>	
+		<td><a href="/em-list.jsp?di_num=<%=rs.getString("di_num")%>"><%=rs.getString("cnt")%></a></td>	
 	</tr>
 <%
 	}

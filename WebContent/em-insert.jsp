@@ -9,6 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="/head.jsp"></jsp:include>
 </head>
 <body>
 <%
@@ -60,11 +61,12 @@ if(request.getMethod().equals("POST")){
 		ps = con.prepareStatement(sql);
 		rs = ps.executeQuery();
 %>
-<form method="post">
-	사원이름 : <input type="text" name="em_name"><br>
-	아이디 : <input type="text" name="em_id"><br>
-	비밀번호 : <input type="password" name="em_pwd"><br>
-	부서명 : 
+<form method="post" class="box">
+	<h1>사원등록</h1> 
+	<p>사원이름</p><input type="text" name="em_name"><br>
+	<p>아이디</p><input type="text" name="em_id"><br>
+	<p>비밀번호</p><input type="password" name="em_pwd"><br>
+	<p>부서명</p>  
 	<select name="di_num">
 		<option value="" selected>부서선택</option>
 <%
@@ -80,7 +82,13 @@ if(request.getMethod().equals("POST")){
 %>
 
 	</select><br>
-	<button>부서등록</button>
+	<input type="submit" value="사원등록">
+	<input type="button" value="취소" onclick="goBack()">
 </form>
+<script>
+function goBack(){
+	location.href = '/em-list.jsp';
+}
+</script>
 </body>
 </html>

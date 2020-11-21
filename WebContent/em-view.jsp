@@ -9,6 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<jsp:include page="/head.jsp"></jsp:include>
 <style>
 *{
 	font-family: sans-serif;
@@ -116,6 +117,10 @@ function goEmUpdate(emNum){
 	location.href = '/em-update.jsp?em_num='+emNum;
 }
 function goEmList(){
+	var search_type = '<%=%>'
+	var di_num = document.querySelector('#di_num').value;
+	var di_name = document.querySelector('#di_name').value;
+	var em_name = document.querySelector('#em_name').value;
 	location.href = '/em-list.jsp';
 }
 </script>
